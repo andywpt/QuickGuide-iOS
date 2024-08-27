@@ -22,3 +22,18 @@
 Synchronous actor initializers cannot hop on the actor's executor, so it runs in a non-isolated context.
 
 An asynchronous initializer can use the executor after all properties have been initialized. Make your init async and it should work:
+## Actor Reentrancy Problem
+When an actor's function suspends (i.e. the function body code runs to the line that contains `await`), it can process other calls. Shared state can change during this period.
+```
+actor Downloader {
+    private var downloadCount = 0
+
+    func downloadData() async -> Data {
+        print(downloadCount)  // ex: 0 
+        let data = await ...  // When it suspends, downloadData() can be called many times before it awakes from suspension
+        downloadCount += 1
+        print(downloadCount)  // So assuming 1 is incorrect here 
+    }
+}
+```
+
