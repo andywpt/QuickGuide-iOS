@@ -18,6 +18,40 @@
 > Where an synchronous function runs is decided by the calling context.
 
 ### Every time a @MainActor function awakes from suspension, it will resume on the main actor. There's no need to manually switch back.
+### Although `Task.detached` cuts off any relationship between the resulting Task object and the surrounding context,it does not guarantee that the task must schedule off the main thread.
+
+[Reference](https://developer.apple.com/videos/play/wwdc2021/10254/?time=1398)
+
+```
+class ViewController: UIViewController {
+
+    override func viewDidLoad(){
+        super.viewDidLoad()
+        Task {
+            XCAssert(Thread.isMainThread) ✅
+            await loadData()
+            XCAssert(Thread.isMainThread) ✅
+        }
+        Task.detatched {
+            XCAssert(Thread.isMainThread) 😈 Unknown
+            await loadData()
+            XCAssert(Thread.isMainThread) 😈 Unknown
+        }
+    }
+
+    func loadData() async {
+        XCAssert(Thread.isMainThread) ✅ Since UIViewController is marked with @MainActor, loadData() is implicitly 
+                                            marked with @MainActor
+    }
+}
+```
+🤔 How to make **loadData** run on the background thread?
+```
+nonisolated func loadData() async {}
+```
+
+
+
 
 Synchronous actor initializers cannot hop on the actor's executor, so it runs in a non-isolated context.
 
@@ -68,7 +102,5 @@ actor TextDownloader {
     }
 }
 ```
-
-## Although Task.detached cuts off any relationship between the resulting Task object and the surrounding context,it does not guarantee that the task must schedule off the main thread.
 
 
