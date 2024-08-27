@@ -30,7 +30,7 @@ When an actor's function suspends (i.e. the function body code runs to the line 
 actor Downloader {
     private var count = 0
 
-    func downloadData() async -> Data {
+    func downloadData() async {
         print(count)          // ex: 0
         doSomeTask()          // Calls some synchronous function
         print(count)          // Assuming 0 is correct 
