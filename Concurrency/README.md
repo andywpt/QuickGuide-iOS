@@ -23,9 +23,7 @@ Synchronous actor initializers cannot hop on the actor's executor, so it runs in
 
 An asynchronous initializer can use the executor after all properties have been initialized. Make your init async and it should work:
 ## Actor Reentrancy Problem
-When an actor's function suspends (i.e. the function body code runs to the line that contains `await`), it can process other calls. Shared state can change during this period.
-> [!Note]
-> A mutable property
+When an actor's function suspends (i.e. the function body code runs to some line that contains `await`), it can process other calls. Hence, shared state can change during this period.
 ```
 actor Downloader {
     private var count = 0
@@ -37,6 +35,29 @@ actor Downloader {
         await doOtherTask()   // When it suspends, downloadData() can be called many times before it awakes from suspension
         count += 1
         print(count)          // Assuming 1 is incorrect 😈 
+    }
+}
+```
+**Solutions**
+1. Read and modify before saying any await in the function body
+2. Wrap the job into a Task, and store it somewhere, other code can refer to the task
+```
+actor Downloader {
+    private var downloadingTask: Task?
+    private var cachedData: Data?
+
+    func downloadData() async -> Data {
+        if let data = cachedData { return data }
+        if let task = downloadingTask { return await task.value }
+        let newTask = Task {
+            let data = await // ...
+            downloadingTask = nil
+            cachedData = data
+            return data
+        }
+        downloadingTask = newTask    // Creates a lock before suspending
+        return await newTask.value   // When other code calls downloadData() during this suspension point,
+                                     // the downloadingTask is already not nil
     }
 }
 ```
