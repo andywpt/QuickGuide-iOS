@@ -69,4 +69,6 @@ actor TextDownloader {
 }
 ```
 
+## Although Task.detached cuts off any relationship between the resulting Task object and the surrounding context,it does no guarantee that the task must schedule off the main thread.
+
 
