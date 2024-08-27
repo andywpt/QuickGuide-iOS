@@ -45,13 +45,22 @@ class ViewController: UIViewController {
     }
 }
 ```
-🤔 How to make **loadData** run on the background thread?
+### 🤔 How to make **loadData** run on the background thread?
 ```
 nonisolated func loadData() async {}
 ```
-
-
-
+### 🤔 How to switch back to main thread when running on the background thread? (i.e. Something like DispatchQueue.main)
+```
+nonisolated func loadData() async {
+    XCAssert(Thread.isMainThread) ❌
+    await MainActor.run {
+        XCAssert(Thread.isMainThread) ✅
+    }
+    XCAssert(Thread.isMainThread) ❌
+}
+```
+> [!CAUTION]
+> Deliberate context switching to the main thread can be expensive. If you have multiple operations to perform on the main thread and you need to call MainActor.run, try to clump those operations into a single call to MainActor.run, so as not to switch contexts unnecessarily.
 
 Synchronous actor initializers cannot hop on the actor's executor, so it runs in a non-isolated context.
 
