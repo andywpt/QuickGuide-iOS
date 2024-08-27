@@ -40,24 +40,31 @@ actor Downloader {
 ```
 **Solutions**
 1. Read and modify before saying any await in the function body
-2. Wrap the job into a Task, and store it somewhere, other code can refer to the task
+2. Wrap the job into a Task, and store it somewhere, so other code can refer to the task
 ```
-actor Downloader {
-    private var downloadingTask: Task?
-    private var cachedData: Data?
+actor TextDownloader {
+    private var downloadingTask: Task<String,Never>?
+    private var cachedText: String?
 
-    func downloadData() async -> Data {
-        if let data = cachedData { return data }
+    func downloadText() async -> String {
+        if let text = cachedText { return text }
         if let task = downloadingTask { return await task.value }
         let newTask = Task {
-            let data = await // ...
+            let data = await fetchTextFromInternet()
             downloadingTask = nil
-            cachedData = data
+            cachedText = data
             return data
         }
         downloadingTask = newTask    // Creates a lock before suspending
         return await newTask.value   // When other code calls downloadData() during this suspension point,
                                      // the downloadingTask is already not nil
+    }
+
+    private func fetchTextFromInternet() async -> String {
+        print("Fetching from internet...")
+        let seconds = 1
+        try! await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+        return "Data"
     }
 }
 ```
