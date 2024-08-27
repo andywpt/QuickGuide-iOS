@@ -14,8 +14,8 @@
 > ```
 
 > [!IMPORTANT]
-> **Synchronous functions (functions that are not marked with `async`) always run on the thread they were called from.**
-> **Where an synchronous function runs is decided by the calling context.**
+> Synchronous functions (functions that are not marked with `async`) always run on the thread they were called from.
+> Where an synchronous function runs is decided by the calling context.
 
 ### Every time a @MainActor function awakes from suspension, it will resume on the main actor. There's no need to manually switch back.
 
