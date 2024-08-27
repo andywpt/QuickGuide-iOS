@@ -49,6 +49,9 @@ class ViewController: UIViewController {
 ```
 nonisolated func loadData() async {}
 ```
+> [!IMPORTANT]
+> The nonisolated keyword is used to indicate to the compiler that the code inside the method is not accessing (either reading or writing) any of the mutable state inside the actor. You can’t declare an method nonisolated if it reads or writes any of the mutable state inside the actor.
+
 ### 🤔 How to switch back to main thread when running on the background thread? (i.e. Something like DispatchQueue.main)
 ```
 nonisolated func loadData() async {
@@ -62,11 +65,19 @@ nonisolated func loadData() async {
 > [!CAUTION]
 > Deliberate context switching to the main thread can be expensive. If you have multiple operations to perform on the main thread and you need to call MainActor.run, try to clump those operations into a single call to MainActor.run, so as not to switch contexts unnecessarily.
 
+
+
+
 Synchronous actor initializers cannot hop on the actor's executor, so it runs in a non-isolated context.
 
 An asynchronous initializer can use the executor after all properties have been initialized. Make your init async and it should work:
-## Actor Reentrancy Problem
-When an actor's function suspends (i.e. the function body code runs to some line that contains `await`), it can process other calls. Hence, shared state can change during this period.
+
+### 🤔 What is Actors Reentrancy?
+When an actor's function suspends (i.e. it runs to some line that contains `await`), the actor can process other calls from outside before the function awakes from suspension. 
+### 🤔 Why are actors designed to be reentrant?
+If actors were not reentrant, all calls to the actor will have to wait for the suspended function, even though the actor is free to do other stuff.
+### 🤔 Are there any gotchas about Actors Reentrancy?
+Yes, The actor's internal shared state can change accross the suspension point.
 ```
 actor Downloader {
     private var count = 0
