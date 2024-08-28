@@ -8,7 +8,7 @@
 - Think of a task as a train, and a thread as a railway
 - Because a task cannot run on two threads at the same time, there is no concurrency inside a task.
 - Each thread can only run one task at any given time, and tasks on different threads can run concurrently.
-- When a running task reaches its suspension point (i.e. `await`), the task releases the current thread ,the task will be cached, and the thread running the task is now free to run another task. So `await` inside a Task doesn't block the thread, it allows other tasks to make progress.
+- When a running task reaches its suspension point (i.e. `await`), the task releases the current thread ,the task will be cached, and the thread running the task is now free to run another task. So `await` inside a Task doesn't block (prevent any other code from running on that thread) the thread, it allows other tasks to make progress.
 -  
 Swift Concurrency uses a thread pool, with the only shipping exception being MainActor which uses a custom executor to run tasks on the main thread. All other actors, including global actors, use the thread pool
 
@@ -16,7 +16,6 @@ Swift Concurrency uses a thread pool, with the only shipping exception being Mai
 - Actor is a reference type that blocks concurrent access. Because an actor can only be on one thread at any time.
 - **can only be on one thread at any time** doesn't imply it sticks to a thread. Only MainActor sticks to a thread (which is the main thread), other actors can run on background threads. An actor can only be on a thread at a time (so there is no concurrent access). But an actor can run on different threads.
 
-(Main Actor )
 ### Actors Reentrancy Problem 😈
 When an actor's function suspends (i.e. it runs to some line that contains `await`), the actor can process other calls from outside before the function awakes from suspension. So we say actors are **reentrant**.
 
