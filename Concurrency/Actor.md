@@ -83,11 +83,10 @@ actor Downloader {
     private var count = 0
 
     func downloadData() async {
-        print(count)          // ex: 0
-        doSomeTask()          // Calls some synchronous function
-        print(count)          // Assuming 0 is correct 
-        await doOtherTask()   // When it suspends, downloadData() can be called many times before it awakes from suspension
         count += 1
+        print(count)          // ex: 1
+        await doOtherTask()   // When it suspends, downloadData() can be called many times before it awakes from 
+                                 suspension, which causes count to be incremented many times.
         print(count)          // Assuming 1 is incorrect 😈 
     }
 }
