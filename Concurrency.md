@@ -3,11 +3,16 @@
 - Task
 - [Actor](#Actor)
 
-## Task 
+## Relation Between Tasks and Threads
+理髮師(Thread) & 客人(Task)
+
+理髮師會依照客人的指示剪頭髮
+理髮師一次只能幫一位客人剪頭髮，也不能多位理髮師同時幫一位客人剪頭髮，因為有店內有多位理髮師，所以可以同時幫多位客人剪頭髮
+客人進來的的順序不一定是剪頭髮的順序
+除非客人自己說要出去講電話，不然該理髮師會負責從頭剪到尾，剪完才會換下一個人
+如果客人剪到一半要暫停出去講電話，那該理髮師會換幫其他客人剪頭髮，該客人回來後，要等其中一位理髮師有空才能繼續剪，而且幫忙剪髮的理髮師不ㄧ定是之前那位，除非客人一開始就有指定給老闆娘剪
+
 ### What's a Task?
-- Think of a task as a train, and a thread as a railway
-- Because a task cannot run on two threads at the same time, there is no concurrency inside a task.
-- Each thread can only run one task at any given time, and tasks on different threads can run concurrently.
 - When a running task reaches its suspension point (i.e. `await`), the task releases the current thread ,the task will be cached, and the thread running the task is now free to run another task. So `await` inside a Task doesn't block (prevent any other code from running on that thread) the thread, it allows other tasks to make progress.
 -  
 Swift Concurrency uses a thread pool, with the only shipping exception being MainActor which uses a custom executor to run tasks on the main thread. All other actors, including global actors, use the thread pool
