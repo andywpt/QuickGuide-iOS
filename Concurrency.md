@@ -8,7 +8,7 @@
 - Think of a task as a train, and a thread as a railway
 - Because a task cannot run on two threads at the same time, there is no concurrency inside a task.
 - Each thread can only run one task at any given time, and tasks on different threads can run concurrently.
-- When a running task reaches its suspension point (i.e. `await`), the task will be cached, and the thread running the task is now free to run another task. So `await` inside a Task doesn't block the thread, it allows other tasks to make progress.
+- When a running task reaches its suspension point (i.e. `await`), the task releases the current thread ,the task will be cached, and the thread running the task is now free to run another task. So `await` inside a Task doesn't block the thread, it allows other tasks to make progress.
 -  
 Swift Concurrency uses a thread pool, with the only shipping exception being MainActor which uses a custom executor to run tasks on the main thread. All other actors, including global actors, use the thread pool
 
