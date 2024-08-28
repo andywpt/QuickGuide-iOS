@@ -3,32 +3,35 @@
 - Task
 - [Actor](#Actor)
 
+## Task 
+### What's a Task?
+- There is no concurrency inside a Task, because a Task only runs on a single thread.
+- Each thread can only run one task at any given time, and tasks that are on different threads can run concurrently.
+- When a running task reaches its suspension point (i.e. `await`), the task will be cached, and the thread running the task is now free to run another task. So `await` inside a Task doesn't block the thread, it allows other tasks to make progress. 
+
+
 ## Actor
-### 🤔 What is Actors Reentrancy?
-When an actor's function suspends (i.e. it runs to some line that contains `await`), the actor can process other calls from outside before the function awakes from suspension. 
-### 🤔 Why are actors designed to be reentrant?
-If actors were not reentrant, all calls to the actor will have to wait for the suspended function, even though the actor is free to do other stuff.
 
-
-### Gotchas with Actor 😈
-
-**Actors Reentrancy Problem**
-
-When an actor's function suspends (i.e. it runs to some line that contains `await`), the actor can process other     calls from outside before the function awakes from suspension. 
+### Actors Reentrancy Problem 😈
+When an actor's function suspends (i.e. it runs to some line that contains `await`), the actor can process other calls from outside before the function awakes from suspension. So we say actors are **reentrant**.
 
 ```
 actor Downloader {
     private var count = 0
 
-    func downloadData() async {
+    func download() async {
         count += 1
-        print(count)          // ex: 1
-        await doOtherTask()   // When it suspends, downloadData() can be called many times before it awakes from 
+        let beforeAwait = count
+        await someTask()   // When it suspends, download() can be called many times before it awakes from 
                                  suspension, which causes count to be incremented many times.
-        print(count)          // Assuming 1 is incorrect 😈 
+        let afterAwait = count
+        XCAsertEqual(beforeAwait,afterAwait) ❌ // Assuming unchanged is incorrect 😈 
     }
 }
 ```
+#### Why are actors designed to be reentrant?
+If actors were not reentrant, all calls to the actor will have to wait for the suspended function, even though the actor is free to do other stuff.
+
 Yes, The actor's internal shared state can change accross the suspension point.
 **Solutions**
 1. Read and modify before saying any await in the function body
