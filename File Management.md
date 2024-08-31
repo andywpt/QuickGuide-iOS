@@ -19,7 +19,7 @@ for case let file as URL in enumerator where file.pathExtension == "txt" {
 ```
 - You can skip searching for a subdirectory using `enumerator.skipDescendants()`
 
-### Use `isExcludedFromBackup` to exclude files from iCloud backup (Cache Directory and Temporary Directory will not be included in backup)
+### Use `isExcludedFromBackup` to exclude files from iCloud backup (Cache Directory and Temporary Directory are not backed up and not reported in your app's Documents & Data total.)
 
 ```
 var values = URLResourceValues()
