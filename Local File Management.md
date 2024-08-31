@@ -15,7 +15,7 @@ for case let file as URL in enumerator where file.pathExtension == "txt" { print
 - **Caches Directory** store cached data
 - **Temporary Directory:** store temporary files
 ```
-let temporaryDirectoryUrl = URL(filePath: NSTemporaryDirectory())
+let temporaryDirectoryUrl = FileManager.default.temporaryDirectory
 let otherDirectoryUrl = try! FileManager.default.url(
   for: // .documentDirectory, .cachesDirectory, .applicationSupportDirectory ,
   in: .userDomainMask,
