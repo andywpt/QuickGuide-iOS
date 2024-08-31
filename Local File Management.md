@@ -23,6 +23,12 @@ let directoryUrl = try! FileManager.default.url(
 )
 // For Temporary Directory
 let url = URL(filePath: NSTemporaryDirectory())
+
+// iOS 16+
+URL.documentsDirectory
+URL.applicationSupportDirectory
+URL.cachesDirectory
+URL.temporaryDirectory
 ```
 > [!NOTE]
 > You should manually remove files in the **Temporary Directory** after you're done with them, even though the system       will periodically remove these files when your app is not running.
