@@ -14,3 +14,4 @@ for case let file as URL in enumerator where file.pathExtension == "txt" {
     print(file.lastPathComponent) // file1.txt, file2.txt
 }
 ```
+- You can skip searching for a subdirectory using `enumerator.skipDescendants()`
