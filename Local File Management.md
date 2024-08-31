@@ -15,20 +15,18 @@ for case let file as URL in enumerator where file.pathExtension == "txt" { print
 - **Caches Directory** store cached data
 - **Temporary Directory:** store temporary files
 ```
-let directoryUrl = try! FileManager.default.url(
+let temporaryDirectoryUrl = URL(filePath: NSTemporaryDirectory())
+let otherDirectoryUrl = try! FileManager.default.url(
   for: // .documentDirectory, .cachesDirectory, .applicationSupportDirectory ,
   in: .userDomainMask,
   appropriateFor: nil,
   create: true
 )
-// For Temporary Directory
-let url = URL(filePath: NSTemporaryDirectory())
-
 // iOS 16+
+URL.temporaryDirectory
 URL.documentsDirectory
 URL.applicationSupportDirectory
 URL.cachesDirectory
-URL.temporaryDirectory
 ```
 > [!NOTE]
 > You should manually remove files in the **Temporary Directory** after you're done with them, even though the system       will periodically remove these files when your app is not running.
