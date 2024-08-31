@@ -1,18 +1,13 @@
 ## Reference
 - [iOS Storage Best Practices](https://developer.apple.com/videos/play/tech-talks/204/)
 
-### Use the FileManager's `contentsOfDirectory` method to perform shallow search for a folder
-Shallow list of all .txt files under a folder
+#### Use the default FileManager's `contentsOfDirectory` method to get first-level files under a folder
 ```
-let contents = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)
-
-for file in contents where file.pathExtension == "txt" { print(file.lastPathComponent) }
+let fileUrls = try FileManager.default.contentsOfDirectory(at: directoryUrl, includingPropertiesForKeys: nil)
 ```
-### Use the FileManager's `enumerator` method to perform deep search for a folder 
-Deep search of all .txt files under a folder
+#### Use the default FileManager's `enumerator` method to get all files (including subdirectories) under a folder 
 ```
 let enumerator = FileManager.default.enumerator(at: directory, includingPropertiesForKeys: nil)!
-
 for case let file as URL in enumerator where file.pathExtension == "txt" { print(file.lastPathComponent) }
 ```
 - You can skip searching for a subdirectory using `enumerator.skipDescendants()`
