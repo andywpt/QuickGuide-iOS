@@ -1,18 +1,18 @@
 ## Reference
 - [iOS Storage Best Practices](https://developer.apple.com/videos/play/tech-talks/204/)
 
-#### Use the default FileManager's `contentsOfDirectory` method to get first-level files under a folder
+### Use the default FileManager's `contentsOfDirectory` method to get first-level file urls under a folder
 ```
 let fileUrls = try FileManager.default.contentsOfDirectory(at: directoryUrl, includingPropertiesForKeys: nil)
 ```
-#### Use the default FileManager's `enumerator` method to get all files (including subdirectories) under a folder 
+### Use the default FileManager's `enumerator` method to get all file urls (including subdirectories) under a folder 
 ```
 let enumerator = FileManager.default.enumerator(at: directory, includingPropertiesForKeys: nil)!
 for case let file as URL in enumerator where file.pathExtension == "txt" { print(file.lastPathComponent) }
 ```
 - You can skip searching for a subdirectory using `enumerator.skipDescendants()`
 
-### Use `isExcludedFromBackup` to exclude files from iCloud backup (Cache Directory and Temporary Directory are not backed up and not reported in your app's Documents & Data total.)
+### Use `isExcludedFromBackup` to exclude files from iCloud backup (Cache Directory and Temporary Directory are not backed up and not reported in your app's Documents & Data total)
 
 ```
 var values = URLResourceValues()
