@@ -13,7 +13,7 @@ viewControllerB 目前在最上層
 - **presentingViewController** 會出現在:
   1. presentedViewController 的 presentingViewController
 #### ViewController是否正在被present, 看它的`presentingViewController`是否等於nil
-呼叫dismiss的ViewController 
+要dismiss被present的ViewController, 呼叫source, presentedViewController, presentingViewController 的dismiss都可以，但用呼叫presentingViewController的dismiss比較正確 (因為若presentedViewController的上方還有被Present的ViewController，則dismiss只會dismiss齊上方的ViewController，而不是本身)
 
 • There is always only one root view controller, other view controllers are subordinate to the root view controller
 
