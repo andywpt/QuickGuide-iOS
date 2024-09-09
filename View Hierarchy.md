@@ -13,7 +13,7 @@ viewControllerA.present(viewControllerB)
   1. presentedViewController 的 presentingViewController
 #### ViewController的`presentedViewController`不等於nil，代表它上方已經有被Present的ViewController，其不能再呼叫present
 #### ViewController的`presentingViewController`等於nil，代表它沒有被present
-#### 實驗發現，一旦present後，位於被present ViewController下方的所有ViewController都不能在present了，因為其presentedViewController都不等於nil，所以要present viewcontroller前，要先從rootViewController開始，找出首個presentedViewController == nil 的 ViewController然後用該ViewController呼叫present
+#### 實驗發現，一旦present後，位於被present ViewController下方的所有ViewController都不能再present了，因為其presentedViewController都不等於nil，所以要present viewcontroller前，要先從rootViewController開始，找出首個presentedViewController == nil 的 ViewController然後用該ViewController呼叫present
 要dismiss被present的ViewController, 雖然呼叫source, presentedViewController, presentingViewController 的dismiss都可以，但呼叫presentingViewController的dismiss比較正確 (因為若presentedViewController的上方還有被Present的ViewController，則dismiss只會dismiss齊上方的ViewController，而不是本身)
 
 • There is always only one root view controller, other view controllers are subordinate to the root view controller
