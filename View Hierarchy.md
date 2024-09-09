@@ -5,13 +5,13 @@ viewControllerA.present(viewControllerB)
 - **presentingViewController**: 呼叫`present`之前，位於最上方的 ViewController, 不一定是source
 - **presentedViewController**: 傳入`present`參數的 ViewController，即被 present 的 ViewController (viewControllerB)
 
-- 被 present 的 ViewController 會被放在:
+- 被 present 的 ViewController 會放在:
   1. **source** 的 presentedViewController
   2. **presentingViewController** 的 presentedViewController
-#### 如果ViewController 的 presentedViewController 不等於nil (即該ViewController的上方已經有被Present的ViewController)，則該ViewController不能再呼叫present
-- **presentingViewController** 會被放在:
+- **presentingViewController** 會放在:
   1. presentedViewController 的 presentingViewController
-#### ViewController是否正在被present, 看它的`presentingViewController`是否等於nil
+#### ViewController的`presentedViewController`不等於nil，代表它上方已經有被Present的ViewController，其不能再呼叫present
+#### ViewController的`presentingViewController`等於nil，代表它沒有被present
 要dismiss被present的ViewController, 雖然呼叫source, presentedViewController, presentingViewController 的dismiss都可以，但呼叫presentingViewController的dismiss比較正確 (因為若presentedViewController的上方還有被Present的ViewController，則dismiss只會dismiss齊上方的ViewController，而不是本身)
 
 • There is always only one root view controller, other view controllers are subordinate to the root view controller
