@@ -1,4 +1,24 @@
+```
+viewControllerA.present(viewControllerB)
+```
+viewControllerB 目前在最上層
+- **source**: 呼叫`present`的 ViewController (viewControllerA)
+- **presentingViewController**: 呼叫`present`之前，位於最上方的 ViewController, 不一定是source
+- **presentedViewController**: 傳入`present`參數的 ViewController，即被 present 的 ViewController (viewControllerB)
+
+- 被 present 的 ViewController (viewControllerB)會被放在:
+  1. **source** 的 presentedViewController
+  2. **presentingViewController** 的 presentedViewController
+#### 如果ViewController 的 presentedViewController 不等於nil (即該ViewController的上方已經有被Present的ViewController)，則該ViewController不能再呼叫present
+- **presentingViewController** 會出現在:
+  1. presentedViewController 的 presentingViewController
+#### ViewController是否正在被present, 看它的`presentingViewController`是否等於nil
+呼叫dismiss的ViewController 
+
 • There is always only one root view controller, other view controllers are subordinate to the root view controller
+
+
+
 • There are two kinds of subordination relationship between view controllers → parent-child relationship 
                                                                                                                                                                 → presenting-presented relationship
 Parent-Child relationship 
