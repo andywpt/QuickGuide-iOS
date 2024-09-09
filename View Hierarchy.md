@@ -1,6 +1,7 @@
 ```
 viewControllerA.present(viewControllerB)
 ```
+過程會涉及3種ViewController:
 - **source**: 呼叫`present`的 ViewController (viewControllerA)
 - **presentingViewController**: 呼叫`present`之前，位於最上方的 ViewController, 不一定是source
 - **presentedViewController**: 傳入`present`參數的 ViewController，即被 present 的 ViewController (viewControllerB)
