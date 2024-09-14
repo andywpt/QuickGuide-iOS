@@ -5,4 +5,4 @@
 ### WTF is Code Signing?
 私鑰擁有者：把Code的Hash值 (又稱為digest，摘要)，用私鑰加密產生數位簽名(signature)，再將(1)公鑰 (2)簽名 (3)Code 傳給驗證者
 驗證者: 把收到的簽名用公鑰解密出Hash值，再把Code的Hash值，如果兩者一致，就能確認消息沒有被篡改。
-拿私鑰加密摘要稱為Code Signing
+拿私鑰加密摘要的動作，稱為Code Signing，摘要就是原始數據的Hash值
