@@ -35,3 +35,6 @@ To summarize,
 code execution in Release builds is optimized, so they are smaller and run faster, but if you place a break point in your code, it may never get hit
 Debug builds will execute your code intactly, so if you place a break point in a function and call it, the break point will get hit
 in the code, you can detect if the current configuration is Debug or Release by using Swift preprocessor flags #if DEBUG
+
+If you find yourself copy pasting the same value several times between .xcconfig files, you can extract those frequently used values to a Base.xcconfig file.
+Then in your [EnvironmentName].xcconfig files, add #include "Base.xcconfig" at the top to inherit from the base config file, then use $(KEY) to read values from base to reduce duplication and chances of making typos.
