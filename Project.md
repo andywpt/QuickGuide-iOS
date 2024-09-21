@@ -24,3 +24,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 }
 ```
+
+Project Configuration: Debug vs. Release
+By default, a new Xcode project will have two configurations: Debug and Release. As the names suggest, Debug configuration is for developers to debug app during development; Release is for releasing your app to TestFlight or App Store. The main difference between these two is:
+
+In a debug build the complete symbolic debug information is emitted to help while debugging applications and also the code optimization is not taken into account. While in release build the symbolic debug info is not emitted and the code execution is optimized. Also, because the symbolic info is not emitted in a release build, the size of the final executable is lesser than a debug executable.
+
+To summarize,
+
+code execution in Release builds is optimized, so they are smaller and run faster, but if you place a break point in your code, it may never get hit
+Debug builds will execute your code intactly, so if you place a break point in a function and call it, the break point will get hit
+in the code, you can detect if the current configuration is Debug or Release by using Swift preprocessor flags #if DEBUG
